@@ -1,0 +1,10 @@
+- c2d2_name: icu_24hr_code_status
+  source_type: derived
+  clif_table: code_status
+  clif_category_column: null
+  clif_category_value: null
+  clif_value_column: code_status_category
+  clif_time_column: start_dttm
+  aggregation: last
+  time_window: icu_first_24h
+  output_type: categorical

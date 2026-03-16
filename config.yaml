@@ -1,0 +1,20 @@
+site_name: "mimic_demo"
+clif_directory: "/Users/sudo_sage/Downloads/work/clif_m"
+filetype: "parquet"
+timezone: "US/Eastern"
+output_directory: "./output"
+output_formats:
+  - parquet
+  - csv
+generate_table1: true
+
+domains:
+  advanced_directives: 1
+  anthropometrics: 1
+  comorbidities: 1
+  diagnoses: 1
+  diagnostic_tests: 1
+  interventions: 1
+  medications: 1
+  objective_assessments: 1
+  outcomes: 1

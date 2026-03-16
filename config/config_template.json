@@ -1,6 +1,0 @@
-{
-    "site_name": "your site name here",
-    "tables_path": "folder loation to clif tables with out / at the end",
-    "file_type": "csv/parquet/fst",
-    "timezone": "US/Central"
-}

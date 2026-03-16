@@ -3,3 +3,6 @@
 *.csv
 *.log
 config/config.json
+output/
+*.pyc
+.DS_Store

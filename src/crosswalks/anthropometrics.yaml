@@ -1,0 +1,57 @@
+- c2d2_name: C2D2_race
+  source_type: direct
+  clif_table: patient
+  clif_column: race_category
+  output_type: categorical
+
+- c2d2_name: C2D2_ethnicity
+  source_type: direct
+  clif_table: patient
+  clif_column: ethnicity_category
+  output_type: categorical
+
+- c2d2_name: C2D2_sex
+  source_type: direct
+  clif_table: patient
+  clif_column: sex_category
+  output_type: categorical
+
+- c2d2_name: C2D2_language
+  source_type: direct
+  clif_table: patient
+  clif_column: language_category
+  output_type: categorical
+
+- c2d2_name: C2D2_age_at_admission
+  source_type: direct
+  clif_table: hospitalization
+  clif_column: age_at_admission
+  output_type: integer
+
+- c2d2_name: first_height_cm
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: height_cm
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: first
+  time_window: icu_full_stay
+  output_type: float
+
+- c2d2_name: first_weight_kg
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: weight_kg
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: first
+  time_window: icu_full_stay
+  output_type: float
+
+- c2d2_name: C2D2_zipcode
+  source_type: direct
+  clif_table: hospitalization
+  clif_column: zipcode_five_digit
+  output_type: categorical

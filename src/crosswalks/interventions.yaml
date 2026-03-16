@@ -1,0 +1,65 @@
+- c2d2_name: icu_any_imv
+  source_type: derived
+  clif_table: respiratory_support
+  clif_category_column: device_category
+  clif_category_value: IMV
+  clif_value_column: device_category
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
+
+- c2d2_name: icu_any_nippv
+  source_type: derived
+  clif_table: respiratory_support
+  clif_category_column: device_category
+  clif_category_value: NIPPV
+  clif_value_column: device_category
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
+
+- c2d2_name: icu_any_hfnc
+  source_type: derived
+  clif_table: respiratory_support
+  clif_category_column: device_category
+  clif_category_value: "High Flow NC"
+  clif_value_column: device_category
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
+
+- c2d2_name: icu_any_tracheostomy
+  source_type: derived
+  clif_table: respiratory_support
+  clif_category_column: tracheostomy
+  clif_category_value: 1
+  clif_value_column: tracheostomy
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
+
+- c2d2_name: icu_any_crrt
+  source_type: derived
+  clif_table: crrt_therapy
+  clif_category_column: null
+  clif_category_value: null
+  clif_value_column: hospitalization_id
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
+
+- c2d2_name: icu_any_ecmo
+  source_type: derived
+  clif_table: ecmo_mcs
+  clif_category_column: null
+  clif_category_value: null
+  clif_value_column: hospitalization_id
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
