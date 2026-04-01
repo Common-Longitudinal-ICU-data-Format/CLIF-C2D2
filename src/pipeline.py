@@ -46,6 +46,38 @@ def load_config(config_path: str) -> dict[str, Any]:
     return config
 
 
+def apply_cde_manifest(df: pl.DataFrame) -> pl.DataFrame:
+    """Rename pipeline columns to CDE names and add stub columns for unmapped CDE vars."""
+    manifest_path = Path(__file__).parent / "crosswalks" / "cde_manifest.yaml"
+    with open(manifest_path) as f:
+        manifest = yaml.safe_load(f)
+
+    # Rename mapped columns (pipeline_col → CDE name)
+    renames = {}
+    for entry in manifest:
+        pcol = entry.get("pipeline_col")
+        if pcol and pcol in df.columns and pcol != entry["name"]:
+            renames[pcol] = entry["name"]
+    if renames:
+        df = df.rename(renames)
+
+    # Add stubs for missing CDE columns
+    for entry in manifest:
+        name = entry["name"]
+        if name not in df.columns:
+            etype = entry.get("type", "float")
+            if etype == "binary":
+                df = df.with_columns(pl.lit(0).cast(pl.Int32).alias(name))
+            elif etype == "integer":
+                df = df.with_columns(pl.lit(None).cast(pl.Int32).alias(name))
+            elif etype == "categorical":
+                df = df.with_columns(pl.lit(None).cast(pl.Utf8).alias(name))
+            else:
+                df = df.with_columns(pl.lit(None).cast(pl.Float64).alias(name))
+
+    return df
+
+
 def run_pipeline(config_path: str) -> None:
     """
     Run the full CLIF-to-C2D2 ETL pipeline.
@@ -113,7 +145,10 @@ def run_pipeline(config_path: str) -> None:
 
         result_df = result_df.join(domain_df, on="icu_stay_id", how="left")
 
-    # Step 3: Write output
+    # Step 3: Apply CDE manifest (rename to CDE names + add stubs)
+    result_df = apply_cde_manifest(result_df)
+
+    # Step 4: Write output
     output_dir.mkdir(parents=True, exist_ok=True)
 
     for fmt in output_formats:
@@ -126,7 +161,7 @@ def run_pipeline(config_path: str) -> None:
             result_df.write_csv(str(out_path))
             print(f"  Written: {out_path}")
 
-    # Step 4: Generate Table 1 if requested
+    # Step 5: Generate Table 1 if requested
     if config.get("generate_table1", False):
         from .table1 import generate_table1
 

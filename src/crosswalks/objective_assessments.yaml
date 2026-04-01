@@ -109,28 +109,6 @@
   time_window: icu_first_24h
   output_type: float
 
-- c2d2_name: icu_24hr_spo2_max
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: spo2
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_spo2_min
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: spo2
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
 - c2d2_name: icu_24hr_respiratory_rate_max
   source_type: derived
   clif_table: vitals
@@ -154,55 +132,11 @@
   output_type: float
 
 # GCS
-- c2d2_name: icu_24hr_gcs_total_max
-  source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: gcs_total
-  clif_value_column: numerical_value
-  clif_time_column: recorded_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
 - c2d2_name: icu_24hr_gcs_total_min
   source_type: derived
   clif_table: patient_assessments
   clif_category_column: assessment_category
   clif_category_value: gcs_total
-  clif_value_column: numerical_value
-  clif_time_column: recorded_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_gcs_eye_min
-  source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: gcs_eye
-  clif_value_column: numerical_value
-  clif_time_column: recorded_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_gcs_motor_min
-  source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: gcs_motor
-  clif_value_column: numerical_value
-  clif_time_column: recorded_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_gcs_verbal_min
-  source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: gcs_verbal
   clif_value_column: numerical_value
   clif_time_column: recorded_dttm
   aggregation: min
@@ -226,30 +160,6 @@
   clif_table: patient_assessments
   clif_category_column: assessment_category
   clif_category_value: RASS
-  clif_value_column: numerical_value
-  clif_time_column: recorded_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-# CAM delirium
-- c2d2_name: icu_24hr_cam_total_max
-  source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: cam_total
-  clif_value_column: numerical_value
-  clif_time_column: recorded_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-# Braden
-- c2d2_name: icu_24hr_braden_total_min
-  source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: braden_total
   clif_value_column: numerical_value
   clif_time_column: recorded_dttm
   aggregation: min

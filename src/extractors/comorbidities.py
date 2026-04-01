@@ -1,4 +1,4 @@
-"""Domain 3: Comorbidities - 18 elements via CCI + Elixhauser."""
+"""Domain 3: Comorbidities - 17 CCI conditions (CDE-aligned)."""
 
 import polars as pl
 from .base import BaseExtractor
@@ -12,9 +12,7 @@ class ComorbiditiesExtractor(BaseExtractor):
         try:
             dx = self._load_clif_table("hospital_diagnosis")
         except FileNotFoundError:
-            return self.cohort_df.select("icu_stay_id").with_columns(
-                pl.lit(None).cast(pl.Int32).alias("cci_score")
-            )
+            return self.cohort_df.select("icu_stay_id")
 
         # calculate_cci returns a pandas DataFrame
         cci_pd = calculate_cci(dx)
@@ -35,4 +33,4 @@ class ComorbiditiesExtractor(BaseExtractor):
         rename_map = {c: f"cci_{c}" for c in cci_condition_cols}
         result = result.rename(rename_map)
 
-        return result.drop("hospitalization_id")
+        return result.drop("hospitalization_id", "cci_score")

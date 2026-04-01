@@ -1,9 +1,3 @@
-- c2d2_name: C2D2_admission_type
-  source_type: direct
-  clif_table: hospitalization
-  clif_column: admission_type_category
-  output_type: categorical
-
 - c2d2_name: C2D2_discharge_disposition
   source_type: direct
   clif_table: hospitalization

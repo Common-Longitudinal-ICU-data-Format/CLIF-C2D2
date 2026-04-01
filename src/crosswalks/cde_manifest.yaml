@@ -1,0 +1,1127 @@
+# =============================================================================
+# C2D2 CDE Manifest — All 226 official CDE variables
+# Source: ccm_53_4_2025_02_06_murphy_ccmed-d-24-01099_sdc2.xlsx
+#
+# Fields:
+#   name         — exact CDE variable name (output column)
+#   type         — binary | float | integer | categorical
+#   domain       — CDE domain grouping
+#   pipeline_col — (optional) current pipeline column name if different
+#
+# If pipeline_col is absent or the column doesn't exist → stub (0 or null)
+# =============================================================================
+
+# ─── Advanced Directives (1) ──────────────────────────────────────────────────
+- name: icu_24hr_code_status
+  type: categorical
+  domain: advanced_directives
+
+# ─── Anthropometrics & Demographics (8) ───────────────────────────────────────
+- name: icu_admit_age
+  type: integer
+  domain: anthropometrics
+  pipeline_col: C2D2_age_at_admission
+
+- name: sex
+  type: categorical
+  domain: anthropometrics
+  pipeline_col: C2D2_sex
+
+- name: race
+  type: categorical
+  domain: anthropometrics
+  pipeline_col: C2D2_race
+
+- name: ethnicity
+  type: categorical
+  domain: anthropometrics
+  pipeline_col: C2D2_ethnicity
+
+- name: first_height_cm
+  type: float
+  domain: anthropometrics
+
+- name: first_weight_kg
+  type: float
+  domain: anthropometrics
+
+- name: first_headcirc
+  type: float
+  domain: anthropometrics
+  # stub — pediatric; not in adult CLIF vitals
+
+- name: area_deprivation_index
+  type: float
+  domain: anthropometrics
+  # stub — requires external geocoding
+
+# ─── Chronic Comorbid Illness (18) ────────────────────────────────────────────
+- name: comorbid_ami
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_myocardial_infarction
+
+- name: comorbid_chf
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_congestive_heart_failure
+
+- name: comorbid_pvd
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_peripheral_vascular_disease
+
+- name: comorbid_cvd
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_cerebrovascular_disease
+
+- name: comorbid_dementia
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_dementia
+
+- name: comorbid_chronicpulm
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_chronic_pulmonary_disease
+
+- name: comorbid_rheum
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_connective_tissue_disease
+
+- name: comorbid_pud
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_peptic_ulcer_disease
+
+- name: comorbid_liver_mild
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_mild_liver_disease
+
+- name: comorbid_liver_modsev
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_moderate_severe_liver_disease
+
+- name: comorbid_diabetes_mildmod
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_diabetes_uncomplicated
+
+- name: comorbid_diabetes_complicated
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_diabetes_with_complications
+
+- name: comorbid_hemiparaplegia
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_hemiplegia
+
+- name: comorbid_renal
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_renal_disease
+
+- name: comorbid_cancer_any
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_cancer
+
+- name: comorbid_mettumor
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_metastatic_solid_tumor
+
+- name: comorbid_aids
+  type: binary
+  domain: comorbidities
+  pipeline_col: cci_aids
+
+- name: comorbid_apacheimmunodef
+  type: binary
+  domain: comorbidities
+  # stub — requires APACHE-specific immunodeficiency logic
+
+# ─── Diagnoses (61) ──────────────────────────────────────────────────────────
+- name: icu_admit_pregnancy_status
+  type: categorical
+  domain: diagnoses
+  # stub — not in CLIF tables
+
+- name: premature
+  type: binary
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_cns
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_ear
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_eye
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_cardiac
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_orofacresp
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_gi
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_gu
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: major_congen_anom_msk
+  type: categorical
+  domain: diagnoses
+  # stub — pediatric
+
+- name: icu_admit_diagnosis
+  type: categorical
+  domain: diagnoses
+  # stub — 64-category clinical checklist, manual review
+
+- name: icu_any_dx_acute_renal_failure
+  type: binary
+  domain: diagnoses
+  # stub — no ICD mapping
+
+- name: icu_any_dx_cardiovascular_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_overdose_withdrawal
+  type: binary
+  domain: diagnoses
+  # mapped — ICD T36-T50, F1x3
+
+- name: icu_any_dx_acs
+  type: binary
+  domain: diagnoses
+  # mapped — ICD I21, I22, I200, I240
+
+- name: icu_any_dx_ards
+  type: binary
+  domain: diagnoses
+  # mapped — ICD J80
+
+- name: icu_any_dx_aneurysm_aortic
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_aneurysm_other
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_angina_stable
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_asthma
+  type: binary
+  domain: diagnoses
+  # mapped — ICD J45
+
+- name: icu_any_dx_chf_cardiomyopathy
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_cva
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_hypovolemia
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_cancer_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_cardiac_arrest
+  type: binary
+  domain: diagnoses
+  # mapped — ICD I46
+
+- name: icu_any_dx_coma
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_dka_hhnc
+  type: binary
+  domain: diagnoses
+  # mapped — ICD E1x0, E1x1
+
+- name: dx_gi_perf
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_gi_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_gu_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_gi_bleed
+  type: binary
+  domain: diagnoses
+  # mapped — ICD K25-K28, K92x
+
+- name: icu_any_dx_head_trauma
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_hematology_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_hematology_surgery_other
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_hematoma_subdural
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_infxn_gi
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_infxn_gu
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_infxn_neuro
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_infxn_other
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_infxn_pulm
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_infxn_cellulitis
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_metabolic_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_msk_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_neuro_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_chest_epigastric
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_pancreatitis
+  type: binary
+  domain: diagnoses
+  # mapped — ICD K85, K861
+
+- name: icu_any_dx_resp_arrest
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_resp_med
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_arrhythmia_atria_svt
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_arrhythmia_conduct
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_arrhythmia_ventricular_svt
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_seizure_primary
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_shock_cardiogenic
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_anaphylaxis
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_trauma
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_htn_uncontrol
+  type: binary
+  domain: diagnoses
+  # stub
+
+- name: icu_any_dx_resp_distress_syndrome
+  type: binary
+  domain: diagnoses
+  # stub — pediatric age<2
+
+- name: icu_any_dx_bronchopulm_dysplasia
+  type: binary
+  domain: diagnoses
+  # stub — pediatric age<2
+
+- name: icu_any_dx_necrotiz_enterocolitis
+  type: binary
+  domain: diagnoses
+  # stub — pediatric age<2
+
+- name: icu_any_dx_cns_injury
+  type: binary
+  domain: diagnoses
+  # stub — pediatric age<2
+
+- name: icu_any_dx_retinopathy_prematurity
+  type: binary
+  domain: diagnoses
+  # stub — pediatric age<2
+
+# ─── Diagnostic Tests (42) ────────────────────────────────────────────────────
+- name: icu_24hr_hct_max
+  type: float
+  domain: diagnostic_tests
+  # stub — hematocrit not in current CLIF labs extraction
+
+- name: icu_24hr_hgb_max
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_hemoglobin_max
+
+- name: icu_24_hr_wbc_max
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_wbc_max
+
+- name: prism_pt_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_inr_max
+  type: float
+  domain: diagnostic_tests
+
+- name: prism_ptt_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_tbili_max
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_bilirubin_total_max
+
+- name: prism_creatinine_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_creatinine_max
+  type: float
+  domain: diagnostic_tests
+
+- name: icu_24hr_lactate_max
+  type: float
+  domain: diagnostic_tests
+
+- name: icu_24hr_alt_max
+  type: float
+  domain: diagnostic_tests
+
+- name: icu_24hr_ast_max
+  type: float
+  domain: diagnostic_tests
+
+- name: prism_glucose_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: prism_postassium_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM (note: typo in CDE source, preserved as-is)
+
+- name: icu_24hr_potassium_max
+  type: float
+  domain: diagnostic_tests
+
+- name: icu_24hr_sodium_max
+  type: float
+  domain: diagnostic_tests
+
+- name: prism_bun_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_pao2_max
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_po2_arterial_max
+
+- name: prism_paco2_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: prism_ph_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_ph_max
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_ph_arterial_max
+
+- name: prism_co2_max
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_base_excess_max
+  type: float
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_sao2_max
+  type: float
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_hct_min
+  type: float
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_hgb_min
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_hemoglobin_min
+
+- name: prism_wbc_min
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_wbc_min
+  type: float
+  domain: diagnostic_tests
+
+- name: prism_platelet_min
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_platelet_min
+  type: float
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_inr_min
+  type: float
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_sodium_min
+  type: float
+  domain: diagnostic_tests
+
+- name: prism_pao2_min
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_pao2_min
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_po2_arterial_min
+
+- name: icu_24hr_paco2_min
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_pco2_arterial_min
+
+- name: prism_ph_min
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_ph_min
+  type: float
+  domain: diagnostic_tests
+  pipeline_col: icu_24hr_ph_arterial_min
+
+- name: prism_co2_min
+  type: float
+  domain: diagnostic_tests
+  # stub — PRISM
+
+- name: icu_24hr_base_excess_min
+  type: float
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_sao2_min
+  type: float
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_culture_blood_any
+  type: binary
+  domain: diagnostic_tests
+  # stub
+
+- name: icu_24hr_culture_urine_any
+  type: binary
+  domain: diagnostic_tests
+  # stub
+
+# ─── Objective Assessments (26) ───────────────────────────────────────────────
+- name: icu_24hr_fio2_max
+  type: float
+  domain: objective_assessments
+  # stub — FiO2 not extracted
+
+- name: icu_24hr_sfratio_min
+  type: float
+  domain: objective_assessments
+  # stub — S/F ratio not computed
+
+- name: icu_24hr_pfratio_min
+  type: float
+  domain: objective_assessments
+  pipeline_col: icu_24hr_pf_ratio_min
+
+- name: prism_gcs_min
+  type: integer
+  domain: objective_assessments
+  # stub — PRISM
+
+- name: icu_24hr_gcs_min
+  type: integer
+  domain: objective_assessments
+  pipeline_col: icu_24hr_gcs_total_min
+
+- name: prism_heartrate_max
+  type: integer
+  domain: objective_assessments
+  # stub — PRISM
+
+- name: icu_24hr_heartrate_max
+  type: float
+  domain: objective_assessments
+  pipeline_col: icu_24hr_heart_rate_max
+
+- name: icu_24hr_map_max
+  type: float
+  domain: objective_assessments
+
+- name: prism_reactivepupils
+  type: categorical
+  domain: objective_assessments
+  # stub — PRISM
+
+- name: icu_24hr_reactivepupils
+  type: categorical
+  domain: objective_assessments
+  # stub — requires nursing assessment
+
+- name: icu_24hr_resprate_max
+  type: float
+  domain: objective_assessments
+  pipeline_col: icu_24hr_respiratory_rate_max
+
+- name: icu_24hr_sbp_max
+  type: float
+  domain: objective_assessments
+
+- name: icu_24hr_dbp_max
+  type: float
+  domain: objective_assessments
+
+- name: prism_temp_max
+  type: float
+  domain: objective_assessments
+  # stub — PRISM
+
+- name: icu_24hr_temp_max
+  type: float
+  domain: objective_assessments
+
+- name: icu_24hr_rass_max
+  type: float
+  domain: objective_assessments
+
+- name: icu_24hr_heartrate_min
+  type: float
+  domain: objective_assessments
+  pipeline_col: icu_24hr_heart_rate_min
+
+- name: icu_24hr_map_min
+  type: float
+  domain: objective_assessments
+
+- name: icu_24hr_resprate_min
+  type: float
+  domain: objective_assessments
+  pipeline_col: icu_24hr_respiratory_rate_min
+
+- name: prism_sbp_min
+  type: float
+  domain: objective_assessments
+  # stub — PRISM
+
+- name: icu_24hr_sbp_min
+  type: float
+  domain: objective_assessments
+
+- name: icu_24hr_dbp_min
+  type: float
+  domain: objective_assessments
+
+- name: prism_temp_min
+  type: float
+  domain: objective_assessments
+  # stub — PRISM
+
+- name: icu_24hr_temp_min
+  type: float
+  domain: objective_assessments
+  # Excel has typo (says temp_max), corrected here
+
+- name: icu_24hr_rass_min
+  type: float
+  domain: objective_assessments
+  # Excel has typo (says rass_max), corrected here
+
+- name: icu_24hr_urineoutput_total
+  type: float
+  domain: objective_assessments
+  # stub — requires intake_output table
+
+# ─── Medications (38) ─────────────────────────────────────────────────────────
+- name: icu_24hr_any_aminoglycoside
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_amphotericin
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_antiarrythmic
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_anticonvulsant
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_argatroban_bivalirudin
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_azole_antifungal
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_blood_product
+  type: binary
+  domain: medications
+  # stub (Excel has space: "blood product", corrected)
+
+- name: icu_24hr_any_chemotherapy
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_clozapine
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_digoxin
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_gancyclovir_valgacyclovir
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_hyperosmolar_fluid
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_immunosuppressant
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_lidocaine_infusion
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_lithium
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_prostacyclin
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_theophylline
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_therapeutic_heparin
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_vancomycin
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_warfarin
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_neuromuscular_blockade
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_total_parenteral_nutrition
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_thromboembolic_prophylaxis
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_stress_ulcer_prophylaxis
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_gylcemic_control_agent
+  type: binary
+  domain: medications
+  # stub (note: typo in CDE source "gylcemic", preserved)
+
+- name: icu_24hr_any_bowel_regimen
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_chlorhexidine_oral_rinse
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_opiates_sedative_intermittent
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_opiates_sedative_infusion
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_antimicrobial
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_broad_spectrum_antimicrobials
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_continuous_infusion_other
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_infusion_dopamine_max
+  type: float
+  domain: medications
+  # stub
+
+- name: icu_24hr_infusion_dobutamine_max
+  type: float
+  domain: medications
+  # stub
+
+- name: icu_24hr_infusion_norepinephrine_max
+  type: float
+  domain: medications
+  pipeline_col: icu_24hr_max_norepinephrine
+
+- name: icu_24hr_infusion_epinephrine_max
+  type: float
+  domain: medications
+  pipeline_col: icu_24hr_max_epinephrine
+
+- name: icu_24hr_any_diuretic
+  type: binary
+  domain: medications
+  # stub
+
+- name: icu_24hr_any_steroid
+  type: binary
+  domain: medications
+
+# ─── Interventions (27) ───────────────────────────────────────────────────────
+- name: icu_any_proc_neurosurg
+  type: binary
+  domain: interventions
+  # stub — requires CPT codes
+
+- name: icu_any_proc_transplant
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cabg_other
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cabg_alone
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_tumor_removal_intracardiac
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cancer_gi
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cancer_gensurg
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cancer_lymphoma
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cancer_neurosurg
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cancer_respiratory
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_cardiovascular
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_endarterectomy
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_gi
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_proc_gu
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_met_endo_surg
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_msk_surg
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_resp_surg
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_thoracotomy_lung_cancer
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_valve_replacement
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_ecmo
+  type: binary
+  domain: interventions
+
+- name: icu_any_intermittent_dialysis
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_crrt
+  type: binary
+  domain: interventions
+
+- name: icu_any_imv
+  type: binary
+  domain: interventions
+
+- name: icu_imv_days
+  type: integer
+  domain: interventions
+  # stub — requires duration computation from respiratory_support
+
+- name: icu_any_oxygen_support
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_cardiac_mech_support
+  type: binary
+  domain: interventions
+  # stub
+
+- name: icu_any_surgery
+  type: binary
+  domain: interventions
+  # stub — pediatric
+
+# ─── Outcomes & Hospital Course (5) ──────────────────────────────────────────
+- name: hosp_los
+  type: integer
+  domain: outcomes
+  pipeline_col: hospital_los_days
+
+- name: icu_los
+  type: integer
+  domain: outcomes
+  pipeline_col: icu_los_days
+
+- name: hosp_admit_source
+  type: categorical
+  domain: outcomes
+  # stub — not extracted from CLIF
+
+- name: hosp_disch_disp
+  type: categorical
+  domain: outcomes
+  pipeline_col: C2D2_discharge_disposition
+
+- name: icu_admit_source
+  type: categorical
+  domain: outcomes
+  # stub — not extracted from CLIF

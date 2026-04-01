@@ -1,4 +1,4 @@
-"""Domain 4: Diagnoses - ~30 ICD10 diagnosis flags."""
+"""Domain 4: Diagnoses - 8 CDE ICD10 diagnosis flags."""
 
 import polars as pl
 from .base import BaseExtractor
