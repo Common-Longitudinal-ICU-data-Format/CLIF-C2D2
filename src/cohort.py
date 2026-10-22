@@ -11,6 +11,8 @@ from clifpy.utils.io_polars import load_data_polars
 
 
 ICU_GAP_HOURS = 1  # Gap threshold between consecutive ICU records
+MIN_ICU_HOURS = 24  # Keep only ICU stays at least this long
+MIN_AGE = 18  # Adults only (hospitalization.age_at_admission)
 
 
 def build_icu_cohort(
@@ -19,7 +21,7 @@ def build_icu_cohort(
     timezone: str | None = None,
 ) -> pl.DataFrame:
     """
-    Identify ICU stays from ADT data.
+    Identify adult ICU stays of at least MIN_ICU_HOURS from ADT data.
 
     Algorithm:
     1. Load ADT table, filter location_category == 'icu'
@@ -27,7 +29,8 @@ def build_icu_cohort(
     3. Detect gaps > ICU_GAP_HOURS between consecutive ICU records -> new stay
     4. Assign icu_stay_id = {hospitalization_id}_icu_{seq}
     5. Compute icu_in_dttm, icu_out_dttm, icu_24h_end_dttm per stay
-    6. Join with hospitalization to get patient_id
+    6. Keep stays lasting >= MIN_ICU_HOURS (missing icu_out_dttm -> dropped)
+    7. Join with hospitalization for patient_id; keep age_at_admission >= MIN_AGE
 
     Returns
     -------
@@ -114,22 +117,27 @@ def build_icu_cohort(
         pl.col("out_dttm").max().alias("icu_out_dttm"),
     )
 
+    # Keep only stays of at least MIN_ICU_HOURS
+    cohort = cohort.filter(
+        pl.col("icu_out_dttm") - pl.col("icu_in_dttm") >= timedelta(hours=MIN_ICU_HOURS)
+    )
+
     # Add 24h end time
     cohort = cohort.with_columns(
         (pl.col("icu_in_dttm") + timedelta(hours=24)).alias("icu_24h_end_dttm")
     )
 
-    # Join with hospitalization to get patient_id
+    # Join with hospitalization for patient_id, adults only
     hosp = load_data_polars(
         table_name="hospitalization",
         table_path=clif_directory,
         table_format_type=filetype,
-        columns=["patient_id", "hospitalization_id"],
+        columns=["patient_id", "hospitalization_id", "age_at_admission"],
         site_tz=timezone,
         lazy=False,
-    )
+    ).filter(pl.col("age_at_admission") >= MIN_AGE)
 
-    cohort = cohort.join(hosp, on="hospitalization_id", how="left")
+    cohort = cohort.join(hosp, on="hospitalization_id", how="inner")
 
     # Select final columns in order
     cohort = cohort.select(

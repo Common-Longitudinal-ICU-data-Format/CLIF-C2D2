@@ -137,7 +137,7 @@ def run_pipeline(config_path: str) -> None:
     cohort_df = build_icu_cohort(clif_dir, filetype, timezone)
     n_stays = len(cohort_df)
     n_patients = cohort_df["patient_id"].n_unique()
-    print(f"  Found {n_stays} ICU stays across {n_patients} patients")
+    print(f"  Found {n_stays} adult ICU stays >=24h across {n_patients} patients")
 
     if cohort_df.is_empty():
         print("No ICU stays found. Exiting.")
