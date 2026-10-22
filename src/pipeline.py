@@ -46,36 +46,37 @@ def load_config(config_path: str) -> dict[str, Any]:
     return config
 
 
-def apply_cde_manifest(df: pl.DataFrame) -> pl.DataFrame:
-    """Rename pipeline columns to CDE names and add stub columns for unmapped CDE vars."""
-    manifest_path = Path(__file__).parent / "crosswalks" / "cde_manifest.yaml"
-    with open(manifest_path) as f:
-        manifest = yaml.safe_load(f)
+def apply_crosswalks(df: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, str]]:
+    """
+    Rename pipeline columns to CDE names and keep only active (mapped) CDEs.
 
-    # Rename mapped columns (pipeline_col → CDE name)
-    renames = {}
-    for entry in manifest:
-        pcol = entry.get("pipeline_col")
-        if pcol and pcol in df.columns and pcol != entry["name"]:
-            renames[pcol] = entry["name"]
-    if renames:
-        df = df.rename(renames)
+    The domain crosswalk YAMLs list all adult C2D2 CDEs; entries with
+    source_type 'unmapped' are deactivated and produce no output column.
+    Returns the final DataFrame and a {cde_name: domain} map.
+    """
+    crosswalk_dir = Path(__file__).parent / "crosswalks"
+    domains: dict[str, str] = {}
+    renames: dict[str, str] = {}
+    for domain in DOMAIN_EXTRACTORS:
+        with open(crosswalk_dir / f"{domain}.yaml") as f:
+            for entry in yaml.safe_load(f) or []:
+                name = entry["c2d2_name"]
+                if name in domains:
+                    raise ValueError(f"Duplicate CDE in crosswalks: {name}")
+                if entry["source_type"] == "unmapped":
+                    continue
+                domains[name] = domain
+                pcol = entry.get("pipeline_col")
+                if pcol and pcol != name:
+                    renames[pcol] = name
 
-    # Add stubs for missing CDE columns
-    for entry in manifest:
-        name = entry["name"]
-        if name not in df.columns:
-            etype = entry.get("type", "float")
-            if etype == "binary":
-                df = df.with_columns(pl.lit(0).cast(pl.Int32).alias(name))
-            elif etype == "integer":
-                df = df.with_columns(pl.lit(None).cast(pl.Int32).alias(name))
-            elif etype == "categorical":
-                df = df.with_columns(pl.lit(None).cast(pl.Utf8).alias(name))
-            else:
-                df = df.with_columns(pl.lit(None).cast(pl.Float64).alias(name))
+    df = df.rename({k: v for k, v in renames.items() if k in df.columns})
 
-    return df
+    missing = [c for c in domains if c not in df.columns]
+    if missing:
+        print(f"  WARNING: {len(missing)} mapped CDEs not produced (domain disabled or failed): {missing}")
+    keep = [c for c in domains if c in df.columns]
+    return df.select("patient_id", "hospitalization_id", "icu_stay_id", *keep), {c: domains[c] for c in keep}
 
 
 def run_pipeline(config_path: str) -> None:
@@ -145,8 +146,8 @@ def run_pipeline(config_path: str) -> None:
 
         result_df = result_df.join(domain_df, on="icu_stay_id", how="left")
 
-    # Step 3: Apply CDE manifest (rename to CDE names + add stubs)
-    result_df = apply_cde_manifest(result_df)
+    # Step 3: Apply crosswalks (rename to CDE names, keep active CDEs only)
+    result_df, cde_domains = apply_crosswalks(result_df)
 
     # Step 4: Write output
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -165,7 +166,7 @@ def run_pipeline(config_path: str) -> None:
     if config.get("generate_table1", False):
         from .table1 import generate_table1
 
-        generate_table1(result_df, output_dir, site_name)
+        generate_table1(result_df, output_dir, site_name, cde_domains)
 
     print(f"Done. Output shape: {result_df.shape} "
           f"({result_df.shape[0]} rows, {result_df.shape[1]} columns)")

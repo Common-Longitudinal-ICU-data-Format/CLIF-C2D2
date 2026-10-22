@@ -5,133 +5,12 @@ Generates a CSV with one row per variable (grouped by clinical domain),
 showing median [Q1, Q3] for continuous variables, n (%) for binary/categorical.
 """
 
-from collections import OrderedDict
 from pathlib import Path
 
 import polars as pl
 
-# Ordered mapping: domain name -> list of column prefixes/exact names.
-# A column is assigned to the FIRST domain whose pattern matches.
-DOMAIN_COLUMNS: OrderedDict[str, list[str]] = OrderedDict(
-    [
-        (
-            "Anthropometrics & Demographics",
-            [
-                "C2D2_race",
-                "C2D2_ethnicity",
-                "C2D2_sex",
-                "C2D2_language",
-                "C2D2_age_",
-                "C2D2_zipcode",
-                "first_height_",
-                "first_weight_",
-            ],
-        ),
-        (
-            "Advanced Directives",
-            [
-                "icu_24hr_code_status",
-            ],
-        ),
-        (
-            "Comorbidities",
-            [
-                "cci_",
-            ],
-        ),
-        (
-            "Diagnoses",
-            [
-                "icu_any_dx_",
-            ],
-        ),
-        (
-            "Diagnostic Tests",
-            [
-                "icu_24hr_creatinine_",
-                "icu_24hr_bilirubin_",
-                "icu_24hr_platelet_",
-                "icu_24hr_hemoglobin_",
-                "icu_24hr_wbc_",
-                "icu_24hr_sodium_",
-                "icu_24hr_potassium_",
-                "icu_24hr_bicarbonate_",
-                "icu_24hr_chloride_",
-                "icu_24hr_bun_",
-                "icu_24hr_glucose_",
-                "icu_24hr_calcium_",
-                "icu_24hr_lactate_",
-                "icu_24hr_albumin_",
-                "icu_24hr_ph_",
-                "icu_24hr_pco2_",
-                "icu_24hr_po2_",
-                "icu_24hr_inr_",
-                "icu_24hr_troponin_",
-                "icu_24hr_procalcitonin_",
-                "icu_24hr_crp_",
-                "icu_24hr_ast_",
-                "icu_24hr_alt_",
-            ],
-        ),
-        (
-            "Interventions",
-            [
-                "icu_any_imv",
-                "icu_any_nippv",
-                "icu_any_hfnc",
-                "icu_any_tracheostomy",
-                "icu_any_crrt",
-                "icu_any_ecmo",
-            ],
-        ),
-        (
-            "Medications",
-            [
-                "icu_24hr_any_",
-                "icu_24hr_max_",
-            ],
-        ),
-        (
-            "Objective Assessments",
-            [
-                "icu_24hr_temp_",
-                "icu_24hr_heart_rate_",
-                "icu_24hr_sbp_",
-                "icu_24hr_dbp_",
-                "icu_24hr_map_",
-                "icu_24hr_spo2_",
-                "icu_24hr_respiratory_rate_",
-                "icu_24hr_gcs_",
-                "icu_24hr_rass_",
-                "icu_24hr_cam_",
-                "icu_24hr_braden_",
-                "icu_24hr_pf_ratio_",
-            ],
-        ),
-        (
-            "Outcomes",
-            [
-                "C2D2_admission_",
-                "C2D2_discharge_",
-                "C2D2_icu_",
-                "hospital_",
-                "icu_los_",
-            ],
-        ),
-    ]
-)
-
 # Columns to always skip (identifiers and datetimes handled separately)
 SKIP_COLUMNS = {"patient_id", "hospitalization_id", "icu_stay_id"}
-
-
-def _match_domain(col_name: str) -> str | None:
-    """Return the domain name for a column, or None if no match."""
-    for domain, patterns in DOMAIN_COLUMNS.items():
-        for pattern in patterns:
-            if col_name == pattern or col_name.startswith(pattern):
-                return domain
-    return None
 
 
 def _classify_column(
@@ -236,7 +115,7 @@ def _summarize_categorical(
 
 
 def generate_table1(
-    df: pl.DataFrame, output_dir: Path, site_name: str
+    df: pl.DataFrame, output_dir: Path, site_name: str, cde_domains: dict[str, str]
 ) -> None:
     """
     Generate a Table 1 summary statistics CSV from the final C2D2 DataFrame.
@@ -249,26 +128,16 @@ def generate_table1(
         Directory to write the CSV into.
     site_name : str
         Site identifier for the output filename.
+    cde_domains : dict[str, str]
+        {cde_name: crosswalk domain}, in output order (from apply_crosswalks).
     """
     total_n = len(df)
 
-    # Assign columns to domains
-    domain_cols: dict[str, list[str]] = {d: [] for d in DOMAIN_COLUMNS}
-    domain_cols["Other"] = []
-
-    analysis_cols = [
-        c
-        for c in df.columns
-        if c not in SKIP_COLUMNS
-        and _classify_column(df[c]) != "skip"
-    ]
-
-    for col in analysis_cols:
-        domain = _match_domain(col)
-        if domain is not None:
-            domain_cols[domain].append(col)
-        else:
-            domain_cols["Other"].append(col)
+    # Assign columns to their crosswalk domain, in crosswalk order
+    domain_cols: dict[str, list[str]] = {}
+    for col, domain in cde_domains.items():
+        if col in df.columns and col not in SKIP_COLUMNS and _classify_column(df[col]) != "skip":
+            domain_cols.setdefault(domain.replace("_", " ").title(), []).append(col)
 
     # Build rows for the output table
     rows: list[dict[str, str]] = []
@@ -284,16 +153,7 @@ def generate_table1(
         }
     )
 
-    # Iterate domains in order
-    all_domains = list(DOMAIN_COLUMNS.keys()) + (
-        ["Other"] if domain_cols.get("Other") else []
-    )
-
-    for domain in all_domains:
-        cols = domain_cols.get(domain, [])
-        if not cols:
-            continue
-
+    for domain, cols in domain_cols.items():
         # Domain header row
         rows.append(
             {
@@ -305,7 +165,7 @@ def generate_table1(
             }
         )
 
-        for col in sorted(cols):
+        for col in cols:
             series = df[col]
             col_type = _classify_column(series)
 

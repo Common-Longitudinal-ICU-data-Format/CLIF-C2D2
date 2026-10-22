@@ -1,4 +1,282 @@
-- c2d2_name: icu_24hr_max_norepinephrine
+# medications - 38 C2D2 adult CDEs (18 mapped, 20 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
+- c2d2_name: icu_24hr_any_aminoglycoside
+  source_type: derived
+  clif_table: medication_admin_intermittent
+  clif_category_column: med_category
+  clif_category_value: [amikacin, gentamicin, tobramycin, plazomicin, streptomycin, kanamycin]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_amphotericin
+  source_type: derived
+  clif_table: medication_admin_intermittent
+  clif_category_column: med_category
+  clif_category_value: [amphotericin_b]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_antiarrythmic
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
+
+- c2d2_name: icu_24hr_any_anticonvulsant
+  source_type: unmapped
+  output_type: binary
+  reason: only valproate in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_argatroban_bivalirudin
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: [argatroban, bivalirudin]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_azole_antifungal
+  source_type: derived
+  clif_table: medication_admin_intermittent
+  clif_category_column: med_category
+  clif_category_value: [fluconazole, voriconazole, posaconazole, isavuconazole, isavuconazonium, itraconazole]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_blood_product
+  source_type: unmapped
+  output_type: binary
+  reason: no transfusion data in CLIF
+
+- c2d2_name: icu_24hr_any_chemotherapy
+  source_type: unmapped
+  output_type: binary
+  reason: only CAR-T products in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_clozapine
+  source_type: unmapped
+  output_type: binary
+  reason: not in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_digoxin
+  source_type: unmapped
+  output_type: binary
+  reason: not in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_gancyclovir_valgacyclovir
+  source_type: derived
+  clif_table: medication_admin_intermittent
+  clif_category_column: med_category
+  clif_category_value: [ganciclovir, valganciclovir]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_hyperosmolar_fluid
+  source_type: unmapped
+  output_type: binary
+  reason: sodium_chloride has no concentration in CLIF (cannot detect hypertonic); mannitol not in CLIF
+
+- c2d2_name: icu_24hr_any_immunosuppressant
+  source_type: unmapped
+  output_type: binary
+  reason: only tacrolimus/tocilizumab/anakinra in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_lidocaine_infusion
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: [lidocaine]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_lithium
+  source_type: unmapped
+  output_type: binary
+  reason: not in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_prostacyclin
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: [epoprostenol, treprostinil]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions; iloprost not in CLIF
+
+- c2d2_name: icu_24hr_any_theophylline
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: [aminophylline]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_therapeutic_heparin
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: [heparin]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions; heparin infusion only, enoxaparin not in CLIF
+
+- c2d2_name: icu_24hr_any_vancomycin
+  source_type: derived
+  clif_table: medication_admin_intermittent
+  clif_category_column: med_category
+  clif_category_value: [vancomycin]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions; not filtered to IV route
+
+- c2d2_name: icu_24hr_any_warfarin
+  source_type: unmapped
+  output_type: binary
+  reason: not in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_neuromuscular_blockade
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
+
+- c2d2_name: icu_24hr_any_total_parenteral_nutrition
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: [tpn]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_thromboembolic_prophylaxis
+  source_type: unmapped
+  output_type: binary
+  reason: CLIF cannot separate prophylactic from therapeutic heparin; enoxaparin not in CLIF
+
+- c2d2_name: icu_24hr_any_stress_ulcer_prophylaxis
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
+
+- c2d2_name: icu_24hr_any_gylcemic_control_agent
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
+
+- c2d2_name: icu_24hr_any_bowel_regimen
+  source_type: unmapped
+  output_type: binary
+  reason: not in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_chlorhexidine_oral_rinse
+  source_type: unmapped
+  output_type: binary
+  reason: not in CLIF medication mCIDE
+
+- c2d2_name: icu_24hr_any_opiates_sedative_intermittent
+  source_type: derived
+  clif_table: medication_admin_intermittent
+  clif_category_column: med_category
+  clif_category_value: [fentanyl, hydromorphone, morphine, oxycodone, midazolam, lorazepam, diazepam, propofol, ketamine]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_opiates_sedative_infusion
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: [fentanyl, hydromorphone, morphine, remifentanil, midazolam, lorazepam, propofol, dexmedetomidine, ketamine, pentobarbital]
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+  note: counts any charted dose row, incl. not-given MAR actions
+
+- c2d2_name: icu_24hr_any_antimicrobial
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
+
+- c2d2_name: icu_24hr_any_broad_spectrum_antimicrobials
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
+
+- c2d2_name: icu_24hr_any_continuous_infusion_other
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
+
+- c2d2_name: icu_24hr_infusion_dopamine_max
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: dopamine
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+  note: dose not unit-converted to mcg/kg/min
+
+- c2d2_name: icu_24hr_infusion_dobutamine_max
+  source_type: derived
+  clif_table: medication_admin_continuous
+  clif_category_column: med_category
+  clif_category_value: dobutamine
+  clif_value_column: med_dose
+  clif_time_column: admin_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+  note: dose not unit-converted to mcg/kg/min
+
+- c2d2_name: icu_24hr_infusion_norepinephrine_max
   source_type: derived
   clif_table: medication_admin_continuous
   clif_category_column: med_category
@@ -9,7 +287,7 @@
   time_window: icu_first_24h
   output_type: float
 
-- c2d2_name: icu_24hr_max_epinephrine
+- c2d2_name: icu_24hr_infusion_epinephrine_max
   source_type: derived
   clif_table: medication_admin_continuous
   clif_category_column: med_category
@@ -19,6 +297,11 @@
   aggregation: max
   time_window: icu_first_24h
   output_type: float
+
+- c2d2_name: icu_24hr_any_diuretic
+  source_type: unmapped
+  output_type: binary
+  reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_steroid
   source_type: derived

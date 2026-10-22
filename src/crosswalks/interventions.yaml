@@ -1,13 +1,116 @@
-- c2d2_name: icu_any_imv
+# interventions - 26 C2D2 adult CDEs (5 mapped, 21 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
+- c2d2_name: icu_any_proc_neurosurg
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_transplant
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cabg_other
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cabg_alone
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_tumor_removal_intracardiac
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cancer_gi
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cancer_gensurg
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cancer_lymphoma
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cancer_neurosurg
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cancer_respiratory
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_cardiovascular
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_endarterectomy
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_gi
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_proc_gu
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_met_endo_surg
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_msk_surg
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_resp_surg
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_thoracotomy_lung_cancer
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_valve_replacement
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
+
+- c2d2_name: icu_any_ecmo
   source_type: derived
-  clif_table: respiratory_support
-  clif_category_column: device_category
-  clif_category_value: IMV
-  clif_value_column: device_category
+  clif_table: ecmo_mcs
+  clif_category_column: null
+  clif_category_value: null
+  clif_value_column: hospitalization_id
   clif_time_column: recorded_dttm
   aggregation: any
   time_window: icu_full_stay
   output_type: binary
+
+- c2d2_name: icu_any_intermittent_dialysis
+  source_type: unmapped
+  output_type: binary
+  reason: needs procedure code list (CPT 90935-90937, ICD-10-PCS 5A1D70Z) from patient_procedures
 
 - c2d2_name: icu_any_crrt
   source_type: derived
@@ -20,13 +123,44 @@
   time_window: icu_full_stay
   output_type: binary
 
-- c2d2_name: icu_any_ecmo
+- c2d2_name: icu_any_imv
+  source_type: derived
+  clif_table: respiratory_support
+  clif_category_column: device_category
+  clif_category_value: IMV
+  clif_value_column: device_category
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
+
+- c2d2_name: icu_imv_days
+  source_type: unmapped
+  output_type: integer
+  reason: needs custom duration logic from respiratory_support
+
+- c2d2_name: icu_any_oxygen_support
+  source_type: derived
+  clif_table: respiratory_support
+  clif_category_column: device_category
+  clif_category_value: [IMV, NIPPV, CPAP, High Flow NC, Face Mask, Trach Collar, Nasal Cannula, Other]
+  clif_value_column: device_category
+  clif_time_column: recorded_dttm
+  aggregation: any
+  time_window: icu_full_stay
+  output_type: binary
+  note: all devices except Room Air
+
+- c2d2_name: icu_any_cardiac_mech_support
   source_type: derived
   clif_table: ecmo_mcs
-  clif_category_column: null
-  clif_category_value: null
+  clif_category_column: mcs_group
+  clif_category_value: [IABP, LVAD, RVAD, durable_LVAD, temporary_LVAD]
   clif_value_column: hospitalization_id
   clif_time_column: recorded_dttm
   aggregation: any
   time_window: icu_full_stay
   output_type: binary
+  note: >-
+    non-ECMO MCS (ECMO is icu_any_ecmo). CLIF 2.1 mcs_group values plus LVAD
+    (seen at sites); CLIF 3.0 renames the table to mcs (support_category iabp/lvad/rvad)

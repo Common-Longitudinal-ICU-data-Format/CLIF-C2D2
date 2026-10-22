@@ -131,8 +131,12 @@ class BaseExtractor(abc.ABC):
             batches.setdefault(key, []).append(entry)
 
         for (table_name, window, cat_col), entries in batches.items():
-            # Determine which category values we need
-            cat_values = list({e["clif_category_value"] for e in entries if e.get("clif_category_value") is not None})
+            # Determine which category values we need (an entry may list several)
+            cat_values = list({
+                v
+                for e in entries if e.get("clif_category_value") is not None
+                for v in (e["clif_category_value"] if isinstance(e["clif_category_value"], list) else [e["clif_category_value"]])
+            })
             time_col = entries[0].get("clif_time_column", "recorded_dttm")
             val_col = entries[0].get("clif_value_column", "lab_value_numeric")
 
@@ -147,6 +151,8 @@ class BaseExtractor(abc.ABC):
                 df = self._load_clif_table(table_name, filters=filters)
             except FileNotFoundError:
                 # Table doesn't exist at this site - produce nulls
+                print(f"  {table_name}: local table not available, "
+                      f"{[e['c2d2_name'] for e in entries]} set to null")
                 for entry in entries:
                     result = result.with_columns(pl.lit(None).alias(entry["c2d2_name"]))
                 continue
@@ -164,19 +170,25 @@ class BaseExtractor(abc.ABC):
                 subset = df
                 if cat_col and entry.get("clif_category_value") is not None:
                     val = entry["clif_category_value"]
-                    # Cast filter value to match column dtype
-                    if cat_col in df.columns:
-                        col_dtype = df[cat_col].dtype
-                        if col_dtype == pl.Boolean:
-                            val = bool(val)
-                        elif col_dtype in (pl.Int32, pl.Int64):
-                            val = int(val)
-                    subset = df.filter(pl.col(cat_col) == val)
+                    if isinstance(val, list):
+                        subset = df.filter(pl.col(cat_col).is_in(val))
+                    else:
+                        # Cast filter value to match column dtype
+                        if cat_col in df.columns:
+                            col_dtype = df[cat_col].dtype
+                            if col_dtype == pl.Boolean:
+                                val = bool(val)
+                            elif col_dtype in (pl.Int32, pl.Int64):
+                                val = int(val)
+                        subset = df.filter(pl.col(cat_col) == val)
 
                 agg_expr = self._build_agg_expr(entry_val_col, agg, c2d2_name)
                 agged = subset.group_by("icu_stay_id").agg(agg_expr)
 
                 result = result.join(agged, on="icu_stay_id", how="left")
+                # "any" flags: no rows in the window means 0, not unknown
+                if agg == "any":
+                    result = result.with_columns(pl.col(c2d2_name).fill_null(0))
 
         return result
 

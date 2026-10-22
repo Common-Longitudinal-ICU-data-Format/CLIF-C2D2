@@ -1,55 +1,253 @@
+# diagnoses - 47 C2D2 adult CDEs (8 mapped, 39 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
+- c2d2_name: icu_admit_pregnancy_status
+  source_type: unmapped
+  output_type: categorical
+  reason: no pregnancy field in CLIF; ICD O-codes/Z33 only a partial proxy
+
+- c2d2_name: icu_admit_diagnosis
+  source_type: unmapped
+  output_type: categorical
+  reason: 64-category clinical checklist for manual review; primary ICD code is a weak proxy
+
+- c2d2_name: icu_any_dx_acute_renal_failure
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_cardiovascular_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_overdose_withdrawal
+  source_type: pass_through_ontology
+  clif_table: hospital_diagnosis
+  code_format: ICD10CM
+  code_prefixes: [T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, F103, F113, F123, F133, F143, F153, F163, F183, F193]
+  output_type: binary
+
 - c2d2_name: icu_any_dx_acs
   source_type: pass_through_ontology
   clif_table: hospital_diagnosis
   code_format: ICD10CM
-  code_prefixes: ["I21", "I22", "I200", "I240"]
+  code_prefixes: [I21, I22, I200, I240]
   output_type: binary
 
 - c2d2_name: icu_any_dx_ards
   source_type: pass_through_ontology
   clif_table: hospital_diagnosis
   code_format: ICD10CM
-  code_prefixes: ["J80"]
+  code_prefixes: [J80]
   output_type: binary
+
+- c2d2_name: icu_any_dx_aneurysm_aortic
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_aneurysm_other
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_angina_stable
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_asthma
   source_type: pass_through_ontology
   clif_table: hospital_diagnosis
   code_format: ICD10CM
-  code_prefixes: ["J45"]
+  code_prefixes: [J45]
   output_type: binary
+
+- c2d2_name: icu_any_dx_chf_cardiomyopathy
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_cva
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_hypovolemia
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_cancer_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_cardiac_arrest
   source_type: pass_through_ontology
   clif_table: hospital_diagnosis
   code_format: ICD10CM
-  code_prefixes: ["I46"]
+  code_prefixes: [I46]
   output_type: binary
+
+- c2d2_name: icu_any_dx_coma
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_dka_hhnc
   source_type: pass_through_ontology
   clif_table: hospital_diagnosis
   code_format: ICD10CM
-  code_prefixes: ["E100", "E101", "E110", "E111", "E130", "E131"]
+  code_prefixes: [E100, E101, E110, E111, E130, E131]
   output_type: binary
+
+- c2d2_name: dx_gi_perf
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_gi_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_gu_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_gi_bleed
   source_type: pass_through_ontology
   clif_table: hospital_diagnosis
   code_format: ICD10CM
-  code_prefixes: ["K25", "K26", "K27", "K28", "K920", "K921", "K922"]
+  code_prefixes: [K25, K26, K27, K28, K920, K921, K922]
   output_type: binary
 
-- c2d2_name: icu_any_dx_overdose_withdrawal
-  source_type: pass_through_ontology
-  clif_table: hospital_diagnosis
-  code_format: ICD10CM
-  code_prefixes: ["T36", "T37", "T38", "T39", "T40", "T41", "T42", "T43", "T44", "T45", "T46", "T47", "T48", "T49", "T50", "F103", "F113", "F123", "F133", "F143", "F153", "F163", "F183", "F193"]
+- c2d2_name: icu_any_dx_head_trauma
+  source_type: unmapped
   output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_hematology_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_hematology_surgery_other
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_hematoma_subdural
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_infxn_gi
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_infxn_gu
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_infxn_neuro
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_infxn_other
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_infxn_pulm
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_infxn_cellulitis
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_metabolic_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_msk_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_neuro_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_chest_epigastric
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_pancreatitis
   source_type: pass_through_ontology
   clif_table: hospital_diagnosis
   code_format: ICD10CM
-  code_prefixes: ["K85", "K861"]
+  code_prefixes: [K85, K861]
   output_type: binary
+
+- c2d2_name: icu_any_dx_resp_arrest
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_resp_med
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_arrhythmia_atria_svt
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_arrhythmia_conduct
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_arrhythmia_ventricular_svt
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_seizure_primary
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_shock_cardiogenic
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_anaphylaxis
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_trauma
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
+
+- c2d2_name: icu_any_dx_htn_uncontrol
+  source_type: unmapped
+  output_type: binary
+  reason: needs ICD-10 code list (hospital_diagnosis)
