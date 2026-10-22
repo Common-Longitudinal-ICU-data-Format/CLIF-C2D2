@@ -33,4 +33,5 @@ class ComorbiditiesExtractor(BaseExtractor):
         rename_map = {c: f"cci_{c}" for c in cci_condition_cols}
         result = result.rename(rename_map)
 
-        return result.drop("hospitalization_id", "cci_score")
+        result = result.drop("hospitalization_id", "cci_score")
+        return result.join(self._extract_pass_through_ontology(), on="icu_stay_id", how="left")

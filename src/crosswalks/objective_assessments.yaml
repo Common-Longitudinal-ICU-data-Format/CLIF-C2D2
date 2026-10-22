@@ -1,27 +1,43 @@
-# Vitals
-- c2d2_name: icu_24hr_temp_max
+# objective_assessments - 20 C2D2 adult CDEs (17 mapped, 3 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
+- c2d2_name: icu_24hr_fio2_max
   source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: temp_c
-  clif_value_column: vital_value
+  clif_table: respiratory_support
+  clif_category_column: null
+  clif_category_value: null
+  clif_value_column: fio2_set
   clif_time_column: recorded_dttm
   aggregation: max
   time_window: icu_first_24h
   output_type: float
+  note: CLIF fio2_set is a fraction (0.21-1); C2D2 unit is %
 
-- c2d2_name: icu_24hr_temp_min
+- c2d2_name: icu_24hr_sfratio_min
+  source_type: unmapped
+  output_type: float
+  clif_status: not_yet_mapped
+  reason: needs custom SpO2/FiO2 asof-join logic (like P/F ratio)
+
+- c2d2_name: icu_24hr_pfratio_min
+  source_type: custom
+  clif_tables: [labs, respiratory_support]
+  implementation: objective_assessments.py::_compute_pf_ratio
+  pipeline_col: icu_24hr_pf_ratio_min
+  output_type: float
+
+- c2d2_name: icu_24hr_gcs_min
   source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: temp_c
-  clif_value_column: vital_value
+  clif_table: patient_assessments
+  clif_category_column: assessment_category
+  clif_category_value: gcs_total
+  clif_value_column: numerical_value
   clif_time_column: recorded_dttm
   aggregation: min
   time_window: icu_first_24h
-  output_type: float
+  output_type: integer
 
-- c2d2_name: icu_24hr_heart_rate_max
+- c2d2_name: icu_24hr_heartrate_max
   source_type: derived
   clif_table: vitals
   clif_category_column: vital_category
@@ -29,61 +45,6 @@
   clif_value_column: vital_value
   clif_time_column: recorded_dttm
   aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_heart_rate_min
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: heart_rate
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_sbp_max
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: sbp
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_sbp_min
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: sbp
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_dbp_max
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: dbp
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_dbp_min
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: dbp
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: min
   time_window: icu_first_24h
   output_type: float
 
@@ -98,6 +59,78 @@
   time_window: icu_first_24h
   output_type: float
 
+- c2d2_name: icu_24hr_reactivepupils
+  source_type: unmapped
+  output_type: categorical
+  clif_status: clif_gap
+  reason: no pupil assessment in CLIF
+
+- c2d2_name: icu_24hr_resprate_max
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: respiratory_rate
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_sbp_max
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: sbp
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_dbp_max
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: dbp
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_temp_max
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: temp_c
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_rass_max
+  source_type: derived
+  clif_table: patient_assessments
+  clif_category_column: assessment_category
+  clif_category_value: RASS
+  clif_value_column: numerical_value
+  clif_time_column: recorded_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_heartrate_min
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: heart_rate
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
 - c2d2_name: icu_24hr_map_min
   source_type: derived
   clif_table: vitals
@@ -109,18 +142,7 @@
   time_window: icu_first_24h
   output_type: float
 
-- c2d2_name: icu_24hr_respiratory_rate_max
-  source_type: derived
-  clif_table: vitals
-  clif_category_column: vital_category
-  clif_category_value: respiratory_rate
-  clif_value_column: vital_value
-  clif_time_column: recorded_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_respiratory_rate_min
+- c2d2_name: icu_24hr_resprate_min
   source_type: derived
   clif_table: vitals
   clif_category_column: vital_category
@@ -131,27 +153,36 @@
   time_window: icu_first_24h
   output_type: float
 
-# GCS
-- c2d2_name: icu_24hr_gcs_total_min
+- c2d2_name: icu_24hr_sbp_min
   source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: gcs_total
-  clif_value_column: numerical_value
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: sbp
+  clif_value_column: vital_value
   clif_time_column: recorded_dttm
   aggregation: min
   time_window: icu_first_24h
   output_type: float
 
-# RASS
-- c2d2_name: icu_24hr_rass_max
+- c2d2_name: icu_24hr_dbp_min
   source_type: derived
-  clif_table: patient_assessments
-  clif_category_column: assessment_category
-  clif_category_value: RASS
-  clif_value_column: numerical_value
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: dbp
+  clif_value_column: vital_value
   clif_time_column: recorded_dttm
-  aggregation: max
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_temp_min
+  source_type: derived
+  clif_table: vitals
+  clif_category_column: vital_category
+  clif_category_value: temp_c
+  clif_value_column: vital_value
+  clif_time_column: recorded_dttm
+  aggregation: min
   time_window: icu_first_24h
   output_type: float
 
@@ -164,4 +195,10 @@
   clif_time_column: recorded_dttm
   aggregation: min
   time_window: icu_first_24h
+  output_type: integer
+
+- c2d2_name: icu_24hr_urineoutput_total
+  source_type: unmapped
   output_type: float
+  clif_status: clif_gap
+  reason: no intake_output table in CLIF

@@ -131,8 +131,12 @@ class BaseExtractor(abc.ABC):
             batches.setdefault(key, []).append(entry)
 
         for (table_name, window, cat_col), entries in batches.items():
-            # Determine which category values we need
-            cat_values = list({e["clif_category_value"] for e in entries if e.get("clif_category_value") is not None})
+            # Determine which category values we need (an entry may list several)
+            cat_values = list({
+                v
+                for e in entries if e.get("clif_category_value") is not None
+                for v in (e["clif_category_value"] if isinstance(e["clif_category_value"], list) else [e["clif_category_value"]])
+            })
             time_col = entries[0].get("clif_time_column", "recorded_dttm")
             val_col = entries[0].get("clif_value_column", "lab_value_numeric")
 
@@ -147,9 +151,17 @@ class BaseExtractor(abc.ABC):
                 df = self._load_clif_table(table_name, filters=filters)
             except FileNotFoundError:
                 # Table doesn't exist at this site - produce nulls
+                print(f"  {table_name}: local table not available, "
+                      f"{[e['c2d2_name'] for e in entries]} set to null")
                 for entry in entries:
-                    result = result.with_columns(pl.lit(None).alias(entry["c2d2_name"]))
+                    result = result.with_columns(
+                        pl.lit(None).cast(pl.Int32).alias(entry["c2d2_name"])
+                    )
                 continue
+
+            # Coalesce the time column when the primary one can be null
+            # (e.g. culture collect_dttm -> order_dttm -> result_dttm)
+            df = self._coalesce_time_column(df, time_col)
 
             # Filter to time window
             df = self._filter_to_time_window(df, time_col, window)
@@ -160,23 +172,44 @@ class BaseExtractor(abc.ABC):
                 agg = entry.get("aggregation", "max")
                 entry_val_col = entry.get("clif_value_column", val_col)
 
+                # If the site's table lacks the requested category value, this
+                # CDE was not assessed -> null (not 0). Only applies to entries
+                # that filter on a category value.
+                cat_val = entry.get("clif_category_value")
+                if cat_col and cat_val is not None and cat_col in df.columns:
+                    present = df[cat_col].drop_nulls().unique().to_list()
+                    wanted = cat_val if isinstance(cat_val, list) else [cat_val]
+                    if not any(w in present for w in wanted):
+                        result = result.with_columns(
+                            pl.lit(None).cast(pl.Int32).alias(c2d2_name)
+                        )
+                        continue
+
                 # Filter to specific category value
                 subset = df
                 if cat_col and entry.get("clif_category_value") is not None:
                     val = entry["clif_category_value"]
-                    # Cast filter value to match column dtype
-                    if cat_col in df.columns:
-                        col_dtype = df[cat_col].dtype
-                        if col_dtype == pl.Boolean:
-                            val = bool(val)
-                        elif col_dtype in (pl.Int32, pl.Int64):
-                            val = int(val)
-                    subset = df.filter(pl.col(cat_col) == val)
+                    if isinstance(val, list):
+                        subset = df.filter(pl.col(cat_col).is_in(val))
+                    else:
+                        # Cast filter value to match column dtype
+                        if cat_col in df.columns:
+                            col_dtype = df[cat_col].dtype
+                            if col_dtype == pl.Boolean:
+                                val = bool(val)
+                            elif col_dtype in (pl.Int32, pl.Int64):
+                                val = int(val)
+                        subset = df.filter(pl.col(cat_col) == val)
 
-                agg_expr = self._build_agg_expr(entry_val_col, agg, c2d2_name)
+                agg_expr = self._build_agg_expr(
+                    entry_val_col, agg, c2d2_name, df=subset
+                )
                 agged = subset.group_by("icu_stay_id").agg(agg_expr)
 
                 result = result.join(agged, on="icu_stay_id", how="left")
+                # "any" flags: no rows in the window means 0, not unknown
+                if agg == "any":
+                    result = result.with_columns(pl.col(c2d2_name).fill_null(0))
 
         return result
 
@@ -327,7 +360,32 @@ class BaseExtractor(abc.ABC):
         return result
 
     @staticmethod
-    def _build_agg_expr(col: str, agg: str, alias: str) -> pl.Expr:
+    def _coalesce_time_column(df: pl.DataFrame, time_col: str) -> pl.DataFrame:
+        """
+        Fill nulls in the primary time column from fallbacks so rows are not
+        dropped during time-window filtering. Applies to culture collection
+        time, where collect_dttm may be missing.
+        """
+        fallbacks = {
+            "collect_dttm": ["collect_dttm", "order_dttm", "result_dttm"],
+        }
+        cols = fallbacks.get(time_col)
+        if not cols:
+            return df
+        available = [c for c in cols if c in df.columns]
+        if time_col not in df.columns or len(available) < 2:
+            return df
+        return df.with_columns(
+            pl.coalesce([pl.col(c) for c in available]).alias(time_col)
+        )
+
+    @staticmethod
+    def _build_agg_expr(
+        col: str,
+        agg: str,
+        alias: str,
+        df: pl.DataFrame | None = None,
+    ) -> pl.Expr:
         """Build a Polars aggregation expression."""
         if agg == "max":
             return pl.col(col).max().alias(alias)
@@ -338,6 +396,15 @@ class BaseExtractor(abc.ABC):
         elif agg == "last":
             return pl.col(col).last().alias(alias)
         elif agg == "any":
+            # Existence flag: "was there any row?". Use the requested value
+            # column if present, otherwise fall back to any guaranteed key
+            # (e.g. microbiology_culture has no lab_value_numeric).
+            if df is not None and col not in df.columns:
+                col = next(
+                    (c for c in ("organism_id", "fluid_category", "hospitalization_id")
+                     if c in df.columns),
+                    df.columns[0],
+                )
             return pl.col(col).is_not_null().any().cast(pl.Int32).alias(alias)
         elif agg == "sum":
             return pl.col(col).sum().alias(alias)

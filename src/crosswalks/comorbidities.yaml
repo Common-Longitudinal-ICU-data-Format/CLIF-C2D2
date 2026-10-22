@@ -1,1 +1,140 @@
-[]
+# comorbidities - 18 C2D2 adult CDEs (18 mapped, 0 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
+- c2d2_name: comorbid_ami
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_myocardial_infarction
+  output_type: binary
+
+- c2d2_name: comorbid_chf
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_congestive_heart_failure
+  output_type: binary
+
+- c2d2_name: comorbid_pvd
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_peripheral_vascular_disease
+  output_type: binary
+
+- c2d2_name: comorbid_cvd
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_cerebrovascular_disease
+  output_type: binary
+
+- c2d2_name: comorbid_dementia
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_dementia
+  output_type: binary
+
+- c2d2_name: comorbid_chronicpulm
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_chronic_pulmonary_disease
+  output_type: binary
+
+- c2d2_name: comorbid_rheum
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_connective_tissue_disease
+  output_type: binary
+
+- c2d2_name: comorbid_pud
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_peptic_ulcer_disease
+  output_type: binary
+
+- c2d2_name: comorbid_liver_mild
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_mild_liver_disease
+  output_type: binary
+
+- c2d2_name: comorbid_liver_modsev
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_moderate_severe_liver_disease
+  output_type: binary
+
+- c2d2_name: comorbid_diabetes_mildmod
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_diabetes_uncomplicated
+  output_type: binary
+
+- c2d2_name: comorbid_diabetes_complicated
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_diabetes_with_complications
+  output_type: binary
+
+- c2d2_name: comorbid_hemiparaplegia
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_hemiplegia
+  output_type: binary
+
+- c2d2_name: comorbid_renal
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_renal_disease
+  output_type: binary
+
+- c2d2_name: comorbid_cancer_any
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_cancer
+  output_type: binary
+
+- c2d2_name: comorbid_mettumor
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_metastatic_solid_tumor
+  output_type: binary
+
+- c2d2_name: comorbid_aids
+  source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
+  pipeline_col: cci_aids
+  output_type: binary
+
+- c2d2_name: comorbid_apacheimmunodef
+  source_type: pass_through_ontology
+  clif_table: hospital_diagnosis
+  code_format: ICD10CM
+  code_prefixes: [
+    B20,                                                            # AIDS
+    C81, C82, C83, C84, C85, C86, C88, C90, C91, C92, C93, C94, C95, C96, D47Z1,  # leukemia/lymphoma/myeloma, PTLD
+    D80, D81, D82, D83, D84, D8981,                                 # primary/acquired immunodeficiency, GVHD
+    Z940, Z941, Z942, Z943, Z944, Z9481, Z9482, Z9483, Z9484, Z9489,  # solid organ / BMT / stem cell transplant status
+    T860, T861, T862, T863, T864, T865, T8681, T8685, T8689, T869,  # transplant complications (no skin/bone/cornea)
+    Z7952, Z796, Z5111, Z5112, Z510, T451X5, D61810, D701,          # steroids, immunosuppressants, chemo, radiation
+  ]
+  output_type: binary
+  note: >-
+    APACHE II immunocompromise only (Knaus 1985), not the organ-insufficiency branch.
+    Codes from Quan 2005 ICD-10 Charlson/Elixhauser (B20, C81-C96) and AHRQ PSI
+    Appendix I IMMUNID v2024 (immunodeficiency, transplant, drug-induced); history
+    codes (Z92.2x, Z92.3) excluded. ICD-9-only hospitalizations read 0.

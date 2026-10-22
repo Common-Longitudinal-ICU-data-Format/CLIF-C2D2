@@ -1,17 +1,36 @@
-- c2d2_name: C2D2_discharge_disposition
+# outcomes - 5 C2D2 adult CDEs (5 mapped, 0 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
+- c2d2_name: hosp_los
+  source_type: custom
+  clif_tables: [hospitalization]
+  implementation: outcomes.py::extract
+  pipeline_col: hospital_los_days
+  output_type: float
+
+- c2d2_name: icu_los
+  source_type: custom
+  clif_tables: [adt]
+  implementation: outcomes.py::extract
+  pipeline_col: icu_los_days
+  output_type: float
+
+- c2d2_name: hosp_admit_source
+  source_type: direct
+  clif_table: hospitalization
+  clif_column: admission_type_category
+  output_type: categorical
+  note: CLIF values are ed/elective/direct, not the dictionary's pre-admission location coding (home, SNF, rehab...)
+
+- c2d2_name: hosp_disch_disp
   source_type: direct
   clif_table: hospitalization
   clif_column: discharge_category
   output_type: categorical
 
-- c2d2_name: C2D2_admission_dttm
-  source_type: direct
-  clif_table: hospitalization
-  clif_column: admission_dttm
-  output_type: datetime
-
-- c2d2_name: C2D2_discharge_dttm
-  source_type: direct
-  clif_table: hospitalization
-  clif_column: discharge_dttm
-  output_type: datetime
+- c2d2_name: icu_admit_source
+  source_type: custom
+  clif_tables: [adt, hospitalization]
+  implementation: outcomes.py::_icu_admit_source
+  output_type: categorical
+  note: adt location_category just before ICU entry; else last adt location of a prior hospitalization discharged <=6h before ICU entry; else direct_icu_admit

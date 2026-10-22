@@ -1,26 +1,29 @@
-- c2d2_name: C2D2_race
-  source_type: direct
-  clif_table: patient
-  clif_column: race_category
-  output_type: categorical
+# anthropometrics - 7 C2D2 adult CDEs (6 mapped, 1 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
 
-- c2d2_name: C2D2_ethnicity
+- c2d2_name: icu_admit_age
   source_type: direct
-  clif_table: patient
-  clif_column: ethnicity_category
-  output_type: categorical
+  clif_table: hospitalization
+  clif_column: age_at_admission
+  output_type: integer
 
-- c2d2_name: C2D2_sex
+- c2d2_name: sex
   source_type: direct
   clif_table: patient
   clif_column: sex_category
   output_type: categorical
 
-- c2d2_name: C2D2_age_at_admission
+- c2d2_name: race
   source_type: direct
-  clif_table: hospitalization
-  clif_column: age_at_admission
-  output_type: integer
+  clif_table: patient
+  clif_column: race_category
+  output_type: categorical
+
+- c2d2_name: ethnicity
+  source_type: direct
+  clif_table: patient
+  clif_column: ethnicity_category
+  output_type: categorical
 
 - c2d2_name: first_height_cm
   source_type: derived
@@ -43,3 +46,9 @@
   aggregation: first
   time_window: icu_full_stay
   output_type: float
+
+- c2d2_name: area_deprivation_index
+  source_type: unmapped
+  output_type: float
+  clif_status: external_data
+  reason: needs external Neighborhood Atlas ADI file joined on hospitalization.census_block_group_code

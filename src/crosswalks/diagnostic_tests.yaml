@@ -1,15 +1,46 @@
-- c2d2_name: icu_24hr_creatinine_max
+# diagnostic_tests - 28 C2D2 adult CDEs (22 mapped, 6 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
+- c2d2_name: icu_24hr_hct_max
+  source_type: unmapped
+  output_type: float
+  clif_status: clif_gap
+  reason: no hematocrit lab_category in CLIF
+
+- c2d2_name: icu_24hr_hgb_max
   source_type: derived
   clif_table: labs
   clif_category_column: lab_category
-  clif_category_value: creatinine
+  clif_category_value: hemoglobin
   clif_value_column: lab_value_numeric
   clif_time_column: lab_result_dttm
   aggregation: max
   time_window: icu_first_24h
   output_type: float
 
-- c2d2_name: icu_24hr_bilirubin_total_max
+- c2d2_name: icu_24_hr_wbc_max
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: wbc
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_inr_max
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: inr
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_tbili_max
   source_type: derived
   clif_table: labs
   clif_category_column: lab_category
@@ -20,77 +51,11 @@
   time_window: icu_first_24h
   output_type: float
 
-- c2d2_name: icu_24hr_hemoglobin_max
+- c2d2_name: icu_24hr_creatinine_max
   source_type: derived
   clif_table: labs
   clif_category_column: lab_category
-  clif_category_value: hemoglobin
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_hemoglobin_min
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: hemoglobin
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_wbc_max
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: wbc
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_wbc_min
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: wbc
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_sodium_max
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: sodium
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_sodium_min
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: sodium
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_potassium_max
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: potassium
+  clif_category_value: creatinine
   clif_value_column: lab_value_numeric
   clif_time_column: lab_result_dttm
   aggregation: max
@@ -108,66 +73,11 @@
   time_window: icu_first_24h
   output_type: float
 
-- c2d2_name: icu_24hr_ph_arterial_max
+- c2d2_name: icu_24hr_alt_max
   source_type: derived
   clif_table: labs
   clif_category_column: lab_category
-  clif_category_value: ph_arterial
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_ph_arterial_min
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: ph_arterial
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_pco2_arterial_min
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: pco2_arterial
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_po2_arterial_max
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: po2_arterial
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: max
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_po2_arterial_min
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: po2_arterial
-  clif_value_column: lab_value_numeric
-  clif_time_column: lab_result_dttm
-  aggregation: min
-  time_window: icu_first_24h
-  output_type: float
-
-- c2d2_name: icu_24hr_inr_max
-  source_type: derived
-  clif_table: labs
-  clif_category_column: lab_category
-  clif_category_value: inr
+  clif_category_value: alt
   clif_value_column: lab_value_numeric
   clif_time_column: lab_result_dttm
   aggregation: max
@@ -185,13 +95,200 @@
   time_window: icu_first_24h
   output_type: float
 
-- c2d2_name: icu_24hr_alt_max
+- c2d2_name: icu_24hr_potassium_max
   source_type: derived
   clif_table: labs
   clif_category_column: lab_category
-  clif_category_value: alt
+  clif_category_value: potassium
   clif_value_column: lab_value_numeric
   clif_time_column: lab_result_dttm
   aggregation: max
   time_window: icu_first_24h
   output_type: float
+
+- c2d2_name: icu_24hr_sodium_max
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: sodium
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_pao2_max
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: po2_arterial
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_ph_max
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: ph_arterial
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_base_excess_max
+  source_type: unmapped
+  output_type: float
+  clif_status: clif_gap
+  reason: no base excess lab_category in CLIF
+
+- c2d2_name: icu_24hr_sao2_max
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: so2_arterial
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: max
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_hct_min
+  source_type: unmapped
+  output_type: float
+  clif_status: clif_gap
+  reason: no hematocrit lab_category in CLIF
+
+- c2d2_name: icu_24hr_hgb_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: hemoglobin
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_wbc_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: wbc
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_platelet_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: platelet_count
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_inr_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: inr
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_sodium_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: sodium
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_pao2_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: po2_arterial
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_paco2_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: pco2_arterial
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_ph_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: ph_arterial
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+- c2d2_name: icu_24hr_base_excess_min
+  source_type: unmapped
+  output_type: float
+  clif_status: clif_gap
+  reason: no base excess lab_category in CLIF
+
+- c2d2_name: icu_24hr_sao2_min
+  source_type: derived
+  clif_table: labs
+  clif_category_column: lab_category
+  clif_category_value: so2_arterial
+  clif_value_column: lab_value_numeric
+  clif_time_column: lab_result_dttm
+  aggregation: min
+  time_window: icu_first_24h
+  output_type: float
+
+# culture "any" CDEs: whether a culture of the given fluid was COLLECTED in
+# the first 24h of ICU (C2D2 REDCap spec). If the site's microbiology_culture
+# table is absent, or it lacks the requested fluid_category, the column is
+# emitted as all-null (not assessed) rather than 0.
+- c2d2_name: icu_24hr_culture_blood_any
+  source_type: derived
+  clif_table: microbiology_culture
+  clif_category_column: fluid_category
+  clif_value_column: fluid_category
+  clif_category_value: blood_buffy
+  clif_time_column: collect_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary
+
+- c2d2_name: icu_24hr_culture_urine_any
+  source_type: derived
+  clif_table: microbiology_culture
+  clif_category_column: fluid_category
+  clif_value_column: fluid_category
+  clif_category_value: genito_urinary_tract
+  clif_time_column: collect_dttm
+  aggregation: any
+  time_window: icu_first_24h
+  output_type: binary

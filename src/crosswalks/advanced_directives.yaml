@@ -1,10 +1,9 @@
+# advanced_directives - 1 C2D2 adult CDEs (1 mapped, 0 unmapped)
+# source_type unmapped = deactivated CDE: no output column until it is mapped
+
 - c2d2_name: icu_24hr_code_status
-  source_type: derived
-  clif_table: code_status
-  clif_category_column: null
-  clif_category_value: null
-  clif_value_column: code_status_category
-  clif_time_column: start_dttm
-  aggregation: last
-  time_window: icu_first_24h
+  source_type: custom
+  clif_tables: [code_status]
+  implementation: advanced_directives.py::extract
+  pipeline_col: icu_24hr_code_status
   output_type: categorical
