@@ -28,11 +28,13 @@
 - c2d2_name: icu_24hr_any_antiarrythmic
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_anticonvulsant
   source_type: unmapped
   output_type: binary
+  clif_status: clif_partial
   reason: only valproate in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_argatroban_bivalirudin
@@ -62,21 +64,25 @@
 - c2d2_name: icu_24hr_any_blood_product
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: no transfusion data in CLIF
 
 - c2d2_name: icu_24hr_any_chemotherapy
   source_type: unmapped
   output_type: binary
+  clif_status: clif_partial
   reason: only CAR-T products in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_clozapine
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: not in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_digoxin
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: not in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_gancyclovir_valgacyclovir
@@ -94,11 +100,13 @@
 - c2d2_name: icu_24hr_any_hyperosmolar_fluid
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: sodium_chloride has no concentration in CLIF (cannot detect hypertonic); mannitol not in CLIF
 
 - c2d2_name: icu_24hr_any_immunosuppressant
   source_type: unmapped
   output_type: binary
+  clif_status: clif_partial
   reason: only tacrolimus/tocilizumab/anakinra in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_lidocaine_infusion
@@ -116,6 +124,7 @@
 - c2d2_name: icu_24hr_any_lithium
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: not in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_prostacyclin
@@ -169,11 +178,13 @@
 - c2d2_name: icu_24hr_any_warfarin
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: not in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_neuromuscular_blockade
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_total_parenteral_nutrition
@@ -191,26 +202,31 @@
 - c2d2_name: icu_24hr_any_thromboembolic_prophylaxis
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: CLIF cannot separate prophylactic from therapeutic heparin; enoxaparin not in CLIF
 
 - c2d2_name: icu_24hr_any_stress_ulcer_prophylaxis
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_gylcemic_control_agent
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_bowel_regimen
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: not in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_chlorhexidine_oral_rinse
   source_type: unmapped
   output_type: binary
+  clif_status: clif_gap
   reason: not in CLIF medication mCIDE
 
 - c2d2_name: icu_24hr_any_opiates_sedative_intermittent
@@ -240,16 +256,19 @@
 - c2d2_name: icu_24hr_any_antimicrobial
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_broad_spectrum_antimicrobials
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_continuous_infusion_other
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_infusion_dopamine_max
@@ -301,6 +320,7 @@
 - c2d2_name: icu_24hr_any_diuretic
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: drugs span medication_admin_continuous and _intermittent; needs two-table support
 
 - c2d2_name: icu_24hr_any_steroid

@@ -4,6 +4,7 @@
 - c2d2_name: icu_24hr_hct_max
   source_type: unmapped
   output_type: float
+  clif_status: clif_gap
   reason: no hematocrit lab_category in CLIF
 
 - c2d2_name: icu_24hr_hgb_max
@@ -141,6 +142,7 @@
 - c2d2_name: icu_24hr_base_excess_max
   source_type: unmapped
   output_type: float
+  clif_status: clif_gap
   reason: no base excess lab_category in CLIF
 
 - c2d2_name: icu_24hr_sao2_max
@@ -157,6 +159,7 @@
 - c2d2_name: icu_24hr_hct_min
   source_type: unmapped
   output_type: float
+  clif_status: clif_gap
   reason: no hematocrit lab_category in CLIF
 
 - c2d2_name: icu_24hr_hgb_min
@@ -250,6 +253,7 @@
 - c2d2_name: icu_24hr_base_excess_min
   source_type: unmapped
   output_type: float
+  clif_status: clif_gap
   reason: no base excess lab_category in CLIF
 
 - c2d2_name: icu_24hr_sao2_min
@@ -263,12 +267,28 @@
   time_window: icu_first_24h
   output_type: float
 
+# culture "any" CDEs: whether a culture of the given fluid was COLLECTED in
+# the first 24h of ICU (C2D2 REDCap spec). If the site's microbiology_culture
+# table is absent, or it lacks the requested fluid_category, the column is
+# emitted as all-null (not assessed) rather than 0.
 - c2d2_name: icu_24hr_culture_blood_any
-  source_type: unmapped
+  source_type: derived
+  clif_table: microbiology_culture
+  clif_category_column: fluid_category
+  clif_value_column: fluid_category
+  clif_category_value: blood_buffy
+  clif_time_column: collect_dttm
+  aggregation: any
+  time_window: icu_first_24h
   output_type: binary
-  reason: needs microbiology_culture table (absent in clif_m) and a fluid_category mapping
 
 - c2d2_name: icu_24hr_culture_urine_any
-  source_type: unmapped
+  source_type: derived
+  clif_table: microbiology_culture
+  clif_category_column: fluid_category
+  clif_value_column: fluid_category
+  clif_category_value: genito_urinary_tract
+  clif_time_column: collect_dttm
+  aggregation: any
+  time_window: icu_first_24h
   output_type: binary
-  reason: needs microbiology_culture table (absent in clif_m) and a fluid_category mapping

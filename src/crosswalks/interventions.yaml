@@ -4,96 +4,115 @@
 - c2d2_name: icu_any_proc_neurosurg
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_transplant
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cabg_other
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cabg_alone
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_tumor_removal_intracardiac
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cancer_gi
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cancer_gensurg
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cancer_lymphoma
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cancer_neurosurg
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cancer_respiratory
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_cardiovascular
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_endarterectomy
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_gi
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_proc_gu
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_met_endo_surg
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_msk_surg
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_resp_surg
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_thoracotomy_lung_cancer
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_valve_replacement
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (patient_procedures ICD-10-PCS/CPT)
 
 - c2d2_name: icu_any_ecmo
@@ -110,6 +129,7 @@
 - c2d2_name: icu_any_intermittent_dialysis
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs procedure code list (CPT 90935-90937, ICD-10-PCS 5A1D70Z) from patient_procedures
 
 - c2d2_name: icu_any_crrt
@@ -137,6 +157,7 @@
 - c2d2_name: icu_imv_days
   source_type: unmapped
   output_type: integer
+  clif_status: not_yet_mapped
   reason: needs custom duration logic from respiratory_support
 
 - c2d2_name: icu_any_oxygen_support

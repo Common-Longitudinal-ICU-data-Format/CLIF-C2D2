@@ -3,11 +3,15 @@
 
 - c2d2_name: hosp_los
   source_type: custom
+  clif_tables: [hospitalization]
+  implementation: outcomes.py::extract
   pipeline_col: hospital_los_days
   output_type: float
 
 - c2d2_name: icu_los
   source_type: custom
+  clif_tables: [adt]
+  implementation: outcomes.py::extract
   pipeline_col: icu_los_days
   output_type: float
 
@@ -26,5 +30,7 @@
 
 - c2d2_name: icu_admit_source
   source_type: custom
+  clif_tables: [adt, hospitalization]
+  implementation: outcomes.py::_icu_admit_source
   output_type: categorical
   note: adt location_category just before ICU entry; else last adt location of a prior hospitalization discharged <=6h before ICU entry; else direct_icu_admit

@@ -3,86 +3,120 @@
 
 - c2d2_name: comorbid_ami
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_myocardial_infarction
   output_type: binary
 
 - c2d2_name: comorbid_chf
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_congestive_heart_failure
   output_type: binary
 
 - c2d2_name: comorbid_pvd
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_peripheral_vascular_disease
   output_type: binary
 
 - c2d2_name: comorbid_cvd
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_cerebrovascular_disease
   output_type: binary
 
 - c2d2_name: comorbid_dementia
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_dementia
   output_type: binary
 
 - c2d2_name: comorbid_chronicpulm
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_chronic_pulmonary_disease
   output_type: binary
 
 - c2d2_name: comorbid_rheum
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_connective_tissue_disease
   output_type: binary
 
 - c2d2_name: comorbid_pud
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_peptic_ulcer_disease
   output_type: binary
 
 - c2d2_name: comorbid_liver_mild
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_mild_liver_disease
   output_type: binary
 
 - c2d2_name: comorbid_liver_modsev
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_moderate_severe_liver_disease
   output_type: binary
 
 - c2d2_name: comorbid_diabetes_mildmod
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_diabetes_uncomplicated
   output_type: binary
 
 - c2d2_name: comorbid_diabetes_complicated
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_diabetes_with_complications
   output_type: binary
 
 - c2d2_name: comorbid_hemiparaplegia
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_hemiplegia
   output_type: binary
 
 - c2d2_name: comorbid_renal
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_renal_disease
   output_type: binary
 
 - c2d2_name: comorbid_cancer_any
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_cancer
   output_type: binary
 
 - c2d2_name: comorbid_mettumor
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_metastatic_solid_tumor
   output_type: binary
 
 - c2d2_name: comorbid_aids
   source_type: custom
+  clif_tables: [hospital_diagnosis]
+  implementation: clifpy.utils.comorbidity.calculate_cci
   pipeline_col: cci_aids
   output_type: binary
 

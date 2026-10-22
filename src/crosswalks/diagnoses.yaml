@@ -4,21 +4,25 @@
 - c2d2_name: icu_admit_pregnancy_status
   source_type: unmapped
   output_type: categorical
+  clif_status: clif_partial
   reason: no pregnancy field in CLIF; ICD O-codes/Z33 only a partial proxy
 
 - c2d2_name: icu_admit_diagnosis
   source_type: unmapped
   output_type: categorical
+  clif_status: clif_partial
   reason: 64-category clinical checklist for manual review; primary ICD code is a weak proxy
 
 - c2d2_name: icu_any_dx_acute_renal_failure
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_cardiovascular_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_overdose_withdrawal
@@ -45,16 +49,19 @@
 - c2d2_name: icu_any_dx_aneurysm_aortic
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_aneurysm_other
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_angina_stable
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_asthma
@@ -67,21 +74,25 @@
 - c2d2_name: icu_any_dx_chf_cardiomyopathy
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_cva
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_hypovolemia
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_cancer_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_cardiac_arrest
@@ -94,6 +105,7 @@
 - c2d2_name: icu_any_dx_coma
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_dka_hhnc
@@ -106,16 +118,19 @@
 - c2d2_name: dx_gi_perf
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_gi_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_gu_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_gi_bleed
@@ -128,71 +143,85 @@
 - c2d2_name: icu_any_dx_head_trauma
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_hematology_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_hematology_surgery_other
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_hematoma_subdural
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_infxn_gi
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_infxn_gu
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_infxn_neuro
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_infxn_other
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_infxn_pulm
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_infxn_cellulitis
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_metabolic_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_msk_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_neuro_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_chest_epigastric
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_pancreatitis
@@ -205,49 +234,59 @@
 - c2d2_name: icu_any_dx_resp_arrest
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_resp_med
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_arrhythmia_atria_svt
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_arrhythmia_conduct
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_arrhythmia_ventricular_svt
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_seizure_primary
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_shock_cardiogenic
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_anaphylaxis
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_trauma
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)
 
 - c2d2_name: icu_any_dx_htn_uncontrol
   source_type: unmapped
   output_type: binary
+  clif_status: not_yet_mapped
   reason: needs ICD-10 code list (hospital_diagnosis)

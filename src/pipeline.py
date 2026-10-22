@@ -46,21 +46,24 @@ def load_config(config_path: str) -> dict[str, Any]:
     return config
 
 
-def apply_crosswalks(df: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, str]]:
+def apply_crosswalks(df: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, str], list[dict]]:
     """
     Rename pipeline columns to CDE names and keep only active (mapped) CDEs.
 
     The domain crosswalk YAMLs list all adult C2D2 CDEs; entries with
     source_type 'unmapped' are deactivated and produce no output column.
-    Returns the final DataFrame and a {cde_name: domain} map.
+    Returns the final DataFrame, a {cde_name: domain} map and all crosswalk
+    entries (each tagged with its domain).
     """
     crosswalk_dir = Path(__file__).parent / "crosswalks"
     domains: dict[str, str] = {}
     renames: dict[str, str] = {}
+    entries: list[dict] = []
     for domain in DOMAIN_EXTRACTORS:
         with open(crosswalk_dir / f"{domain}.yaml") as f:
             for entry in yaml.safe_load(f) or []:
                 name = entry["c2d2_name"]
+                entries.append({**entry, "domain": domain})
                 if name in domains:
                     raise ValueError(f"Duplicate CDE in crosswalks: {name}")
                 if entry["source_type"] == "unmapped":
@@ -76,7 +79,37 @@ def apply_crosswalks(df: pl.DataFrame) -> tuple[pl.DataFrame, dict[str, str]]:
     if missing:
         print(f"  WARNING: {len(missing)} mapped CDEs not produced (domain disabled or failed): {missing}")
     keep = [c for c in domains if c in df.columns]
-    return df.select("patient_id", "hospitalization_id", "icu_stay_id", *keep), {c: domains[c] for c in keep}
+    return df.select("patient_id", "hospitalization_id", "icu_stay_id", *keep), {c: domains[c] for c in keep}, entries
+
+
+def cde_status(df: pl.DataFrame, entries: list[dict], clif_dir: str, filetype: str) -> pl.DataFrame:
+    """
+    One row per CDE saying whether it was produced at this site and why not.
+
+    Unmapped CDEs carry their CLIF-level clif_status from the crosswalk. Mapped
+    CDEs are 'site_table_missing' (a source table file is absent),
+    'site_no_data' (column all null) or 'available'.
+    """
+    rows = []
+    for e in entries:
+        name = e["c2d2_name"]
+        n = df[name].count() if name in df.columns else 0
+        if e["source_type"] == "unmapped":
+            status = e["clif_status"]
+        else:
+            tables = e.get("clif_tables") or [e["clif_table"]]
+            missing = [t for t in tables if not (Path(clif_dir) / f"clif_{t}.{filetype}").exists()]
+            status = "site_table_missing" if missing else "site_no_data" if n == 0 else "available"
+        rows.append({
+            "c2d2_name": name,
+            "domain": e["domain"],
+            "source_type": e["source_type"],
+            "status": status,
+            "reason": e.get("reason"),
+            "n_nonnull": n,
+            "pct_nonnull": round(100 * n / df.height, 1) if df.height else 0.0,
+        })
+    return pl.DataFrame(rows)
 
 
 def run_pipeline(config_path: str) -> None:
@@ -147,7 +180,7 @@ def run_pipeline(config_path: str) -> None:
         result_df = result_df.join(domain_df, on="icu_stay_id", how="left")
 
     # Step 3: Apply crosswalks (rename to CDE names, keep active CDEs only)
-    result_df, cde_domains = apply_crosswalks(result_df)
+    result_df, cde_domains, entries = apply_crosswalks(result_df)
 
     # Step 4: Write output
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -161,6 +194,11 @@ def run_pipeline(config_path: str) -> None:
             out_path = output_dir / f"{site_name}_c2d2.csv"
             result_df.write_csv(str(out_path))
             print(f"  Written: {out_path}")
+
+    status = cde_status(result_df, entries, clif_dir, filetype)
+    status.write_csv(str(output_dir / f"{site_name}_c2d2_cde_status.csv"))
+    counts = status["status"].value_counts(sort=True).iter_rows()
+    print("  CDE status: " + ", ".join(f"{c} {s}" for s, c in counts))
 
     # Step 5: Generate Table 1 if requested
     if config.get("generate_table1", False):

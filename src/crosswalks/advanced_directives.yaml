@@ -3,5 +3,7 @@
 
 - c2d2_name: icu_24hr_code_status
   source_type: custom
+  clif_tables: [code_status]
+  implementation: advanced_directives.py::extract
   pipeline_col: icu_24hr_code_status
   output_type: categorical
